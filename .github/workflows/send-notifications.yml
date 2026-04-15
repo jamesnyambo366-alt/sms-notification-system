@@ -1,0 +1,38 @@
+name: Send Daily SMS Notifications
+
+on:
+  schedule:
+    - cron: '0 10 * * *'  # Runs every day at 10:00 AM UTC
+
+jobs:
+  send-sms:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install twilio
+
+      - name: Send SMS Notifications
+        run: |
+          import os
+          from twilio.rest import Client
+
+          account_sid = os.environ['TWILIO_ACCOUNT_SID']
+          auth_token = os.environ['TWILIO_AUTH_TOKEN']
+          client = Client(account_sid, auth_token)
+
+          message = client.messages.create(
+              body='Your daily SMS notification!',
+              from_='+1234567890',  # Replace with your Twilio number
+              to='+0987654321'       # Replace with the recipient's number
+          )
+
+          print(f'SMS sent: {message.sid}')
