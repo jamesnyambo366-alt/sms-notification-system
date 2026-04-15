@@ -1,0 +1,5 @@
+twilio==7.0.0
+# Include your database library here, e.g., psycopg2 for PostgreSQL
+# psycopg2==2.9.1
+# Include a scheduling library, e.g., schedule
+schedule==1.1.0
